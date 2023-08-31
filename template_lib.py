@@ -115,11 +115,7 @@ class Renderer(markdown_code_blocks.CodeRenderer):
         )
 
     def codespan(self, text: str) -> str:
-        if text.startswith('<kbd>'):
-            # we trust this content
-            return text
-        else:
-            return super().codespan(text)
+        return text if text.startswith('<kbd>') else super().codespan(text)
 
     def image(
             self,
@@ -147,10 +143,7 @@ class Renderer(markdown_code_blocks.CodeRenderer):
             ret = _render_cmd(code)
         else:
             ret = super().block_code(code, info)
-        if copyable:
-            return f'<div class="copyable">{ret}</div>'
-        else:
-            return ret
+        return f'<div class="copyable">{ret}</div>' if copyable else ret
 
 
 def md(s: str) -> str:
